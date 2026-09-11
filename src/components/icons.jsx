@@ -52,3 +52,26 @@ export const Plus = (props) => (
     <path d="M12 5v14M5 12h14" />
   </svg>
 )
+
+export const Sliders = (props) => (
+  <svg {...base} {...props}>
+    <path d="M4 7h7M18 7h2M4 17h2M13 17h7" />
+    <circle cx="15" cy="7" r="2.5" />
+    <circle cx="9" cy="17" r="2.5" />
+  </svg>
+)
+
+export const Bars = (props) => (
+  <svg {...base} {...props}>
+    <path d="M5 20v-6M12 20V4M19 20v-9" />
+  </svg>
+)
+
+export const Gift = (props) => (
+  <svg {...base} {...props}>
+    <rect x="4" y="9" width="16" height="11" rx="2" />
+    <path d="M12 9v11M4 14h16" />
+    <path d="M12 9c-2.2 0-4.5-.8-4.5-2.8A2.1 2.1 0 0 1 9.6 4c1.8 0 2.4 3 2.4 5z" />
+    <path d="M12 9c2.2 0 4.5-.8 4.5-2.8A2.1 2.1 0 0 0 14.4 4C12.6 4 12 7 12 9z" />
+  </svg>
+)
