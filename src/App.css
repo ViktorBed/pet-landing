@@ -512,7 +512,7 @@ button.chip:hover {
 
 .match-card__meta {
   font-size: 0.78rem;
-  color: var(--ink-3);
+  color: #b3b4b0;
 }
 
 .match-ring {
@@ -565,7 +565,7 @@ button.chip:hover {
 
 .scorebar__name {
   font-size: 0.78rem;
-  color: var(--ink-2);
+  color: #a8a8a4;
 }
 
 .scorebar__track {
