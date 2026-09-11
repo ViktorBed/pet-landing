@@ -83,6 +83,8 @@ function loadGtm(id) {
   // SPA, so a no-JS visitor gets no page at all — the iframe would never show.
 }
 
+// Fallback only: the canonical Meta Pixel install is the base code in
+// index.html <head> (per Meta's docs), which defines fbq before this runs.
 function loadMetaPixel(id) {
   if (window.fbq) return
   const fbq = (window.fbq = function (...args) {
@@ -141,11 +143,10 @@ export function initAnalytics() {
 
 export function trackPageView() {
   const params = getTrackingParams()
-  // GTM route: fire a GA4 page_view / Pixel PageView tag off this event.
+  // GTM route: fire a GA4 page_view tag off this event. Meta Pixel PageView
+  // fires from the base code in index.html <head> (per Meta's spec); GA4
+  // sends page_view automatically on gtag('config', …).
   window.dataLayer.push({ event: 'page_view', ...params })
-  // Direct Meta Pixel. gtag needs no explicit call — GA4 sends page_view
-  // automatically on gtag('config', …).
-  if (window.fbq) window.fbq('track', 'PageView')
   console.log('[tracking] PageView', params)
 }
 
