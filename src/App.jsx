@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
 import Offers from './components/Offers.jsx'
@@ -9,20 +8,10 @@ import Reviews from './components/Reviews.jsx'
 import Faq from './components/Faq.jsx'
 import LeadForm from './components/LeadForm.jsx'
 import Footer from './components/Footer.jsx'
-import { captureTrackingParams, trackPageView } from './lib/tracking.js'
 import { useReveal } from './lib/useReveal.js'
 import './App.css'
 
-let pageViewSent = false
-
 export default function App() {
-  useEffect(() => {
-    if (pageViewSent) return
-    pageViewSent = true
-    captureTrackingParams()
-    trackPageView()
-  }, [])
-
   useReveal()
 
   return (
