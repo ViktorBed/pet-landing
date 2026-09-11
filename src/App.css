@@ -1,3 +1,17 @@
+/* ---------- ambient backdrop (gives the glass something to refract) ---------- */
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(52vw 42vh at 82% 4%, rgba(207, 245, 65, 0.08), transparent 68%),
+    radial-gradient(46vw 40vh at 4% 32%, rgba(214, 192, 143, 0.075), transparent 66%),
+    radial-gradient(50vw 46vh at 70% 80%, rgba(159, 134, 255, 0.065), transparent 70%),
+    radial-gradient(38vw 30vh at 30% 92%, rgba(207, 245, 65, 0.045), transparent 70%);
+}
+
 /* ---------- layout primitives ---------- */
 
 .container {
@@ -16,7 +30,7 @@
 }
 
 .section--tinted {
-  background: var(--bg-2);
+  background: rgba(255, 255, 255, 0.018);
   border-top: 1px solid var(--line-soft);
   border-bottom: 1px solid var(--line-soft);
 }
@@ -254,9 +268,9 @@ button.chip:hover {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(19, 20, 24, 0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(19, 20, 24, 0.55);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease;
 }
@@ -1426,4 +1440,119 @@ button.chip:hover {
     justify-content: space-between;
     align-items: flex-start;
   }
+}
+
+/* ---------- iOS-18 liquid glass (last: wins the cascade over per-card bg) ---------- */
+
+.offer-card,
+.match-card,
+.hiw__demo,
+.finder,
+.trust-card,
+.trust__badge,
+.review-card,
+.faq__item,
+.lead__card,
+.hero__chip {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+
+.offer-card:hover,
+.faq__item.is-open {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.offer-card--featured {
+  background: linear-gradient(
+    165deg,
+    rgba(214, 192, 143, 0.15) 0%,
+    rgba(255, 255, 255, 0.03) 45%,
+    rgba(214, 192, 143, 0.055) 100%
+  );
+  border-color: rgba(214, 192, 143, 0.42);
+}
+
+.trust__badge {
+  background: linear-gradient(160deg, rgba(214, 192, 143, 0.16), rgba(214, 192, 143, 0.045));
+  border-color: rgba(214, 192, 143, 0.34);
+}
+
+.chip,
+.btn--ghost,
+.btn--outline {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(255, 255, 255, 0.13);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+button.chip:hover,
+.btn--ghost:hover,
+.btn--outline:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.chip.is-active {
+  background: rgba(207, 245, 65, 0.14);
+  border-color: var(--lime);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 18px -6px rgba(207, 245, 65, 0.35);
+}
+
+.chip--static {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.btn--primary {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+    0 10px 28px -10px rgba(207, 245, 65, 0.35);
+}
+
+.btn--primary:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+    0 10px 34px -8px rgba(207, 245, 65, 0.5);
+}
+
+.field__input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.13);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.field__input:focus {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: var(--lime);
+}
+
+.monogram {
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.lead__thanks-icon {
+  background: rgba(207, 245, 65, 0.12);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 0 32px -8px rgba(207, 245, 65, 0.4);
+}
+
+/* glass needs a track that reads through the blur */
+.scorebar__track,
+.rank-row__bar {
+  background: rgba(255, 255, 255, 0.1);
 }

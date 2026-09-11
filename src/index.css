@@ -21,8 +21,22 @@
   --font-serif: 'Instrument Serif', Georgia, serif;
 
   --container: 1140px;
-  --radius: 18px;
-  --radius-sm: 12px;
+  --radius: 24px;
+  --radius-sm: 15px;
+
+  /* iOS-18 liquid glass */
+  --glass-bg: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 42%,
+    rgba(255, 255, 255, 0.065) 100%
+  );
+  --glass-border: rgba(255, 255, 255, 0.13);
+  --glass-blur: blur(22px) saturate(160%);
+  --glass-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.13),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 24px 48px -28px rgba(0, 0, 0, 0.6);
 
   color-scheme: dark;
 }

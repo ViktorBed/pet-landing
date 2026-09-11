@@ -27,6 +27,7 @@ export default function App() {
 
   return (
     <>
+      <div className="ambient" aria-hidden="true" />
       <Header />
       <main>
         <Hero />
