@@ -612,42 +612,6 @@ button.chip:hover {
   color: var(--lime);
 }
 
-.hero__chip {
-  position: absolute;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--card);
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--ink-2);
-  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.5);
-  animation: float 7s ease-in-out infinite;
-}
-
-.hero__chip--one {
-  top: 6px;
-  left: 6%;
-  color: var(--lime);
-  border-color: rgba(207, 245, 65, 0.3);
-}
-
-.hero__chip--two {
-  bottom: 10px;
-  right: 5%;
-  animation-delay: -3.5s;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-9px);
-  }
-}
-
 @media (min-width: 960px) {
   .hero {
     padding: 96px 0 110px;
@@ -1452,8 +1416,7 @@ button.chip:hover {
 .trust__badge,
 .review-card,
 .faq__item,
-.lead__card,
-.hero__chip {
+.lead__card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   -webkit-backdrop-filter: var(--glass-blur);

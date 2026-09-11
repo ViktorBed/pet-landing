@@ -86,8 +86,6 @@ export default function Hero() {
               <span className="match-card__cta">Your #1 match</span>
             </div>
           </div>
-          <div className="hero__chip hero__chip--one">Fast payouts</div>
-          <div className="hero__chip hero__chip--two">Live dealers</div>
         </div>
       </div>
     </section>
