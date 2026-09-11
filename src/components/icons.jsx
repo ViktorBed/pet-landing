@@ -67,6 +67,21 @@ export const Bars = (props) => (
   </svg>
 )
 
+export const FileText = (props) => (
+  <svg {...base} {...props}>
+    <path d="M6 3h8l4 4v14H6z" />
+    <path d="M14 3v4h4M9.5 12h5M9.5 16h5" />
+  </svg>
+)
+
+export const Scale = (props) => (
+  <svg {...base} {...props}>
+    <path d="M12 4.5v14.5M8.5 19h7M5 7.5l7-2.5 7 2.5" />
+    <path d="M2.5 12.5L5 7.5l2.5 5a2.6 2.6 0 0 1-5 0z" />
+    <path d="M16.5 12.5l2.5-5 2.5 5a2.6 2.6 0 0 1-5 0z" />
+  </svg>
+)
+
 export const Gift = (props) => (
   <svg {...base} {...props}>
     <rect x="4" y="9" width="16" height="11" rx="2" />

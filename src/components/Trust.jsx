@@ -1,19 +1,23 @@
-import { Shield } from './icons.jsx'
+import { Clock, FileText, Scale, Shield } from './icons.jsx'
 
 const pillars = [
   {
+    icon: Clock,
     title: 'Real money, real stopwatch',
     text: 'Every score starts with our own deposit. We play, withdraw, and time the payout to the minute — 214 casinos and counting.',
   },
   {
+    icon: Shield,
     title: 'Licences checked, not assumed',
     text: 'We verify each licence number against the MGA, UKGC and Curacao registers before a casino can enter the index.',
   },
   {
+    icon: FileText,
     title: 'The small print, translated',
     text: 'Wagering, max bet, sticky terms — we read all of it and print the catch next to every bonus, in plain language.',
   },
   {
+    icon: Scale,
     title: 'Rankings are not for sale',
     text: 'Casinos can pay to be listed faster, never to rank higher. Positions come from test scores alone, rubric published.',
   },
@@ -53,6 +57,9 @@ export default function Trust() {
                 data-reveal
                 style={{ '--reveal-delay': `${i * 80}ms` }}
               >
+                <span className="trust-card__icon">
+                  <p.icon width={20} height={20} />
+                </span>
                 <h3 className="trust-card__title">{p.title}</h3>
                 <p className="trust-card__text">{p.text}</p>
               </article>

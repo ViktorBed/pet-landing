@@ -1,20 +1,20 @@
 import { useMemo, useState } from 'react'
 import { casinos, matchScore, preferenceOptions } from '../data/casinos.js'
-import { Bars, Check, Gift, Sliders } from './icons.jsx'
+import { Check } from './icons.jsx'
 
 const steps = [
   {
-    icon: Sliders,
+    n: '1',
     title: 'Tell us what matters',
     text: 'Pick the things you actually care about — payout speed, bonus size, live tables. No sign-up needed to try it.',
   },
   {
-    icon: Bars,
+    n: '2',
     title: 'Watch the ranking react',
     text: 'Every choice re-weighs our test scores in real time. The order you see is math, not sponsorship.',
   },
   {
-    icon: Gift,
+    n: '3',
     title: 'Claim your match',
     text: 'Open your top match, claim the verified bonus, and we’ll email your full shortlist so you never lose it.',
   },
@@ -47,10 +47,8 @@ export default function HowItWorks() {
         <div className="hiw__layout">
           <ol className="hiw__steps" data-reveal>
             {steps.map((s) => (
-              <li key={s.title} className="hiw__step">
-                <span className="hiw__step-icon">
-                  <s.icon width={20} height={20} />
-                </span>
+              <li key={s.n} className="hiw__step">
+                <span className="hiw__step-num">{s.n}</span>
                 <div>
                   <h3 className="hiw__step-title">{s.title}</h3>
                   <p className="hiw__step-text">{s.text}</p>
