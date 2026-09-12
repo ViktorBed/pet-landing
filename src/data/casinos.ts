@@ -1,7 +1,9 @@
-// Fictional brands — placeholders for the test task.
-// `features` are 0–10 editorial sub-scores used by the live re-ranking demo.
+import type { Casino, FaqItem, FeatureKey, PreferenceOption, Review } from '../types/casino.ts'
+import { FEATURE_KEYS } from '../types/casino.ts'
 
-export const casinos = [
+// Fictional brands — placeholders for the test task.
+
+export const casinos: readonly Casino[] = [
   {
     id: 'novaspin',
     name: 'NovaSpin',
@@ -60,21 +62,31 @@ export const casinos = [
   },
 ]
 
-export const preferenceOptions = [
-  { key: 'payout', label: 'Fast payouts' },
-  { key: 'bonus', label: 'Big welcome bonus' },
-  { key: 'live', label: 'Live dealers' },
-  { key: 'crypto', label: 'Crypto friendly' },
-  { key: 'games', label: 'Huge game library' },
-]
+// Record over FeatureKey so adding a feature forces a label at compile time.
+const FEATURE_LABELS: Readonly<Record<FeatureKey, string>> = {
+  payout: 'Fast payouts',
+  bonus: 'Big welcome bonus',
+  games: 'Huge game library',
+  crypto: 'Crypto friendly',
+  live: 'Live dealers',
+}
 
-export function matchScore(casino, selectedKeys) {
-  const keys = selectedKeys.length ? selectedKeys : Object.keys(casino.features)
-  const sum = keys.reduce((acc, key) => acc + (casino.features[key] ?? 0), 0)
+/** Chip order in the live re-ranking demo. */
+const PREFERENCE_ORDER = ['payout', 'bonus', 'live', 'crypto', 'games'] as const satisfies readonly FeatureKey[]
+
+export const preferenceOptions: readonly PreferenceOption[] = PREFERENCE_ORDER.map((key) => ({
+  key,
+  label: FEATURE_LABELS[key],
+}))
+
+/** Weighs a casino's sub-scores against the visitor's priorities, as a 0–100 match. */
+export function matchScore(casino: Casino, selectedKeys: readonly FeatureKey[]): number {
+  const keys = selectedKeys.length > 0 ? selectedKeys : FEATURE_KEYS
+  const sum = keys.reduce((acc, key) => acc + casino.features[key], 0)
   return Math.round((sum / keys.length) * 10)
 }
 
-export const reviews = [
+export const reviews: readonly Review[] = [
   {
     id: 'novaspin-review',
     name: 'NovaSpin',
@@ -113,25 +125,30 @@ export const reviews = [
   },
 ]
 
-export const faqs = [
+export const faqs: readonly FaqItem[] = [
   {
-    q: 'Is Shortlist free to use?',
-    a: 'Yes. Matching, reviews and the full index are free. We earn a referral fee from some casinos when you sign up through our links — it never changes your bonus and never changes a casino’s score.',
+    question: 'Is Shortlist free to use?',
+    answer:
+      'Yes. Matching, reviews and the full index are free. We earn a referral fee from some casinos when you sign up through our links — it never changes your bonus and never changes a casino’s score.',
   },
   {
-    q: 'How are the ratings calculated?',
-    a: 'Every casino gets the same test: we deposit real money, play, request a withdrawal and time it. Licence, bonus terms, game range and support responses are scored on a fixed rubric. Scores are re-checked every 90 days.',
+    question: 'How are the ratings calculated?',
+    answer:
+      'Every casino gets the same test: we deposit real money, play, request a withdrawal and time it. Licence, bonus terms, game range and support responses are scored on a fixed rubric. Scores are re-checked every 90 days.',
   },
   {
-    q: 'Can a casino pay for a higher position?',
-    a: 'No. Commercial deals affect which casinos we can list, not where they rank. Ranking positions come from test scores alone, and we publish the scoring rubric openly.',
+    question: 'Can a casino pay for a higher position?',
+    answer:
+      'No. Commercial deals affect which casinos we can list, not where they rank. Ranking positions come from test scores alone, and we publish the scoring rubric openly.',
   },
   {
-    q: 'Are the bonuses on this page real?',
-    a: 'We re-verify every listed offer weekly and show the full key terms — wagering, max bet, expiry — before you click. If an offer changes, the card changes the same day.',
+    question: 'Are the bonuses on this page real?',
+    answer:
+      'We re-verify every listed offer weekly and show the full key terms — wagering, max bet, expiry — before you click. If an offer changes, the card changes the same day.',
   },
   {
-    q: 'What if gambling stops being fun?',
-    a: 'Stop, and use the tools: every casino we list must offer deposit limits and self-exclusion. Free, confidential help is available at BeGambleAware.org. We only work with licensed operators, and you must be 18+.',
+    question: 'What if gambling stops being fun?',
+    answer:
+      'Stop, and use the tools: every casino we list must offer deposit limits and self-exclusion. Free, confidential help is available at BeGambleAware.org. We only work with licensed operators, and you must be 18+.',
   },
 ]

@@ -6,12 +6,12 @@
 // fields and console logging keep working either way, so the GTM route can be
 // used on its own by only filling in VITE_GTM_ID.
 const CONFIG = {
-  gtmId: import.meta.env.VITE_GTM_ID || '', // 'GTM-XXXXXXX'
-  metaPixelId: import.meta.env.VITE_META_PIXEL_ID || '', // '1234567890123456'
-  ga4Id: import.meta.env.VITE_GA4_ID || '', // 'G-XXXXXXXXXX'
-  googleAdsId: import.meta.env.VITE_GOOGLE_ADS_ID || '', // 'AW-123456789'
+  gtmId: import.meta.env.VITE_GTM_ID ?? '', // 'GTM-XXXXXXX'
+  metaPixelId: import.meta.env.VITE_META_PIXEL_ID ?? '', // '1234567890123456'
+  ga4Id: import.meta.env.VITE_GA4_ID ?? '', // 'G-XXXXXXXXXX'
+  googleAdsId: import.meta.env.VITE_GOOGLE_ADS_ID ?? '', // 'AW-123456789'
   // Conversion label from the Google Ads conversion action ('AW-123/AbC…' → 'AbC…')
-  googleAdsLabel: import.meta.env.VITE_GOOGLE_ADS_LABEL || '',
+  googleAdsLabel: import.meta.env.VITE_GOOGLE_ADS_LABEL ?? '',
 }
 
 const TRACKED_PARAMS = [
@@ -20,23 +20,62 @@ const TRACKED_PARAMS = [
   'utm_campaign',
   'utm_term',
   'utm_content',
+  'clickid',
+  'subid',
   'fbclid',
   'gclid',
   'gbraid',
   'wbraid',
   'ttclid',
   'msclkid',
-]
+] as const
+
+type TrackedParam = (typeof TRACKED_PARAMS)[number]
+
+export interface TrackingParams extends Partial<Record<TrackedParam, string>> {
+  landing_url?: string
+  first_touch_at?: string
+}
+
+export interface Lead {
+  lead_name: string
+  lead_email: string
+}
+
+interface MetaPixel {
+  (...args: unknown[]): void
+  callMethod?: (...args: unknown[]) => void
+  push: MetaPixel
+  loaded: boolean
+  version: string
+  queue: unknown[][]
+}
+
+declare global {
+  interface Window {
+    dataLayer: unknown[]
+    fbq?: MetaPixel
+    _fbq?: MetaPixel
+    gtag?: (...args: unknown[]) => void
+    __slAnalyticsInited?: boolean
+  }
+}
 
 const STORAGE_KEY = 'sl_tracking'
 
-export function captureTrackingParams() {
-  let stored = {}
+function readStored(): TrackingParams {
   try {
-    stored = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}
+    const raw = localStorage.getItem(STORAGE_KEY)
+    const parsed: unknown = raw ? JSON.parse(raw) : null
+    // Guard against corrupt entries like "null" — callers rely on an object.
+    return typeof parsed === 'object' && parsed !== null ? (parsed as TrackingParams) : {}
   } catch {
-    stored = {}
+    return {}
   }
+}
+
+export function captureTrackingParams(): TrackingParams {
+  const stored = readStored()
 
   const query = new URLSearchParams(window.location.search)
   let touched = false
@@ -49,7 +88,7 @@ export function captureTrackingParams() {
   }
   if (touched) {
     stored.landing_url = window.location.href
-    stored.first_touch_at = stored.first_touch_at || new Date().toISOString()
+    stored.first_touch_at = stored.first_touch_at ?? new Date().toISOString()
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(stored))
     } catch {
@@ -59,24 +98,20 @@ export function captureTrackingParams() {
   return stored
 }
 
-export function getTrackingParams() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}
-  } catch {
-    return {}
-  }
+export function getTrackingParams(): TrackingParams {
+  return readStored()
 }
 
 /* ---------------------------------------------------------------- loaders */
 
-function loadScript(src) {
+function loadScript(src: string): void {
   const el = document.createElement('script')
   el.async = true
   el.src = src
   document.head.appendChild(el)
 }
 
-function loadGtm(id) {
+function loadGtm(id: string): void {
   window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' })
   loadScript(`https://www.googletagmanager.com/gtm.js?id=${id}`)
   // The usual <noscript> GTM iframe is omitted intentionally: this is a React
@@ -85,22 +120,23 @@ function loadGtm(id) {
 
 // Fallback only: the canonical Meta Pixel install is the base code in
 // index.html <head> (per Meta's docs), which defines fbq before this runs.
-function loadMetaPixel(id) {
+function loadMetaPixel(id: string): void {
   if (window.fbq) return
-  const fbq = (window.fbq = function (...args) {
-    if (fbq.callMethod) fbq.callMethod(...args)
-    else fbq.queue.push(args)
-  })
-  window._fbq = fbq
+  const fbq: MetaPixel = Object.assign(
+    (...args: unknown[]) => {
+      if (fbq.callMethod) fbq.callMethod(...args)
+      else fbq.queue.push(args)
+    },
+    { loaded: true, version: '2.0', queue: [] as unknown[][] },
+  ) as MetaPixel
   fbq.push = fbq
-  fbq.loaded = true
-  fbq.version = '2.0'
-  fbq.queue = []
+  window.fbq = fbq
+  window._fbq = fbq
   loadScript('https://connect.facebook.net/en_US/fbevents.js')
   fbq('init', id)
 }
 
-function loadGtag(ids) {
+function loadGtag(ids: readonly string[]): void {
   window.gtag = function () {
     // gtag must forward `arguments` itself (not a rest-spread array) —
     // GA inspects the Arguments object.
@@ -114,17 +150,17 @@ function loadGtag(ids) {
 
 /* ------------------------------------------------------------------ init */
 
-export function initAnalytics() {
+export function initAnalytics(): void {
   if (window.__slAnalyticsInited) return
   window.__slAnalyticsInited = true
 
-  window.dataLayer = window.dataLayer || []
+  window.dataLayer = window.dataLayer ?? []
   const params = captureTrackingParams()
 
   if (CONFIG.gtmId) loadGtm(CONFIG.gtmId)
   if (CONFIG.metaPixelId) loadMetaPixel(CONFIG.metaPixelId)
   const gtagIds = [CONFIG.ga4Id, CONFIG.googleAdsId].filter(Boolean)
-  if (gtagIds.length) loadGtag(gtagIds)
+  if (gtagIds.length > 0) loadGtag(gtagIds)
 
   trackPageView()
 
@@ -141,7 +177,7 @@ export function initAnalytics() {
 
 /* ---------------------------------------------------------------- events */
 
-export function trackPageView() {
+export function trackPageView(): void {
   const params = getTrackingParams()
   // GTM route: fire a GA4 page_view tag off this event. Meta Pixel PageView
   // fires from the base code in index.html <head> (per Meta's spec); GA4
@@ -150,7 +186,7 @@ export function trackPageView() {
   console.log('[tracking] PageView', params)
 }
 
-export function trackLead(lead) {
+export function trackLead(lead: Lead): void {
   const params = getTrackingParams()
   const payload = { ...params, ...lead }
 

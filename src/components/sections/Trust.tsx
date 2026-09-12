@@ -1,6 +1,13 @@
-import { Clock, FileText, Scale, Shield } from './icons.jsx'
+import type { FC } from 'react'
+import { Clock, FileText, Scale, Shield, type IconProps } from '../ui/icons.tsx'
 
-const pillars = [
+interface Pillar {
+  readonly icon: FC<IconProps>
+  readonly title: string
+  readonly text: string
+}
+
+const pillars: readonly Pillar[] = [
   {
     icon: Clock,
     title: 'Real money, real stopwatch',
@@ -50,18 +57,18 @@ export default function Trust() {
           </div>
 
           <div className="trust__grid">
-            {pillars.map((p, i) => (
+            {pillars.map((pillar, i) => (
               <article
-                key={p.title}
+                key={pillar.title}
                 className="trust-card"
                 data-reveal
                 style={{ '--reveal-delay': `${i * 80}ms` }}
               >
                 <span className="trust-card__icon">
-                  <p.icon width={20} height={20} />
+                  <pillar.icon width={20} height={20} />
                 </span>
-                <h3 className="trust-card__title">{p.title}</h3>
-                <p className="trust-card__text">{p.text}</p>
+                <h3 className="trust-card__title">{pillar.title}</h3>
+                <p className="trust-card__text">{pillar.text}</p>
               </article>
             ))}
           </div>

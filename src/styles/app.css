@@ -19,6 +19,8 @@
   max-width: var(--container);
   margin: 0 auto;
   padding: 0 20px;
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
 }
 
 .container--narrow {
@@ -173,6 +175,17 @@
   overflow-x: auto;
   padding-bottom: 6px;
   scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+/* bleed scroll rows to the card edge so a cut-off chip hints at more content */
+@media (max-width: 819px) {
+  .chip-row--scroll {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
 
 .chip-row--scroll::-webkit-scrollbar {
@@ -183,7 +196,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 40px;
+  min-height: 44px;
   padding: 8px 16px;
   border-radius: 999px;
   border: 1px solid var(--line);
@@ -1251,14 +1264,14 @@ button.chip:hover {
   background: linear-gradient(165deg, var(--card-2), var(--card));
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 32px 22px;
+  padding: 32px 20px;
   display: grid;
   gap: 28px;
 }
 
 .lead h2 {
   font-size: clamp(1.8rem, 5.5vw, 2.5rem);
-  margin: 10px 0 12px;
+  margin: 10px 0 14px;
 }
 
 .lead__form {
@@ -1335,7 +1348,7 @@ button.chip:hover {
 
 .footer {
   border-top: 1px solid var(--line-soft);
-  padding: 48px 0 32px;
+  padding: 48px 0 max(32px, env(safe-area-inset-bottom));
   background: var(--bg-2);
 }
 

@@ -1,9 +1,26 @@
-import { ArrowRight } from './icons.jsx'
+import { ArrowRight } from '../ui/icons.tsx'
 
-const stats = [
+interface Stat {
+  readonly value: string
+  readonly label: string
+}
+
+const stats: readonly Stat[] = [
   { value: '214', label: 'casinos tested with real deposits' },
   { value: '41 min', label: 'fastest verified payout this year' },
   { value: '90 days', label: 'max age of any score on the index' },
+]
+
+interface ScoreBar {
+  readonly name: string
+  readonly width: `${number}%`
+  readonly score: string
+}
+
+const demoBars: readonly ScoreBar[] = [
+  { name: 'Payout speed', width: '96%', score: '9.6' },
+  { name: 'Bonus value', width: '91%', score: '9.1' },
+  { name: 'Game library', width: '84%', score: '8.4' },
 ]
 
 export default function Hero() {
@@ -59,27 +76,15 @@ export default function Hero() {
               </div>
             </div>
             <div className="match-card__bars">
-              <div className="scorebar">
-                <span className="scorebar__name">Payout speed</span>
-                <span className="scorebar__track">
-                  <span className="scorebar__fill" style={{ width: '96%' }} />
-                </span>
-                <span className="scorebar__num">9.6</span>
-              </div>
-              <div className="scorebar">
-                <span className="scorebar__name">Bonus value</span>
-                <span className="scorebar__track">
-                  <span className="scorebar__fill" style={{ width: '91%' }} />
-                </span>
-                <span className="scorebar__num">9.1</span>
-              </div>
-              <div className="scorebar">
-                <span className="scorebar__name">Game library</span>
-                <span className="scorebar__track">
-                  <span className="scorebar__fill" style={{ width: '84%' }} />
-                </span>
-                <span className="scorebar__num">8.4</span>
-              </div>
+              {demoBars.map((bar) => (
+                <div key={bar.name} className="scorebar">
+                  <span className="scorebar__name">{bar.name}</span>
+                  <span className="scorebar__track">
+                    <span className="scorebar__fill" style={{ width: bar.width }} />
+                  </span>
+                  <span className="scorebar__num">{bar.score}</span>
+                </div>
+              ))}
             </div>
             <div className="match-card__foot">
               <span className="match-card__bonus">200% up to €500</span>

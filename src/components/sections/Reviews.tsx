@@ -1,5 +1,5 @@
-import { reviews } from '../data/casinos.js'
-import { ArrowRight, Check, Minus } from './icons.jsx'
+import { reviews } from '../../data/casinos.ts'
+import { ArrowRight, Check, Minus } from '../ui/icons.tsx'
 
 export default function Reviews() {
   return (
@@ -16,31 +16,33 @@ export default function Reviews() {
         </div>
 
         <div className="reviews__row">
-          {reviews.map((r, i) => (
+          {reviews.map((review, i) => (
             <article
-              key={r.id}
+              key={review.id}
               className="review-card"
               data-reveal
               style={{ '--reveal-delay': `${i * 90}ms` }}
             >
               <header className="review-card__head">
-                <span className={`monogram monogram--sm monogram--${r.tone}`}>{r.monogram}</span>
+                <span className={`monogram monogram--sm monogram--${review.tone}`}>
+                  {review.monogram}
+                </span>
                 <div className="review-card__title">
-                  <h3>{r.name}</h3>
-                  <p className="review-card__date">{r.date}</p>
+                  <h3>{review.name}</h3>
+                  <p className="review-card__date">{review.date}</p>
                 </div>
-                <span className="review-card__score">{r.score.toFixed(1)}</span>
+                <span className="review-card__score">{review.score.toFixed(1)}</span>
               </header>
-              <p className="review-card__excerpt">{r.excerpt}</p>
+              <p className="review-card__excerpt">{review.excerpt}</p>
               <ul className="review-card__points">
-                {r.pros.map((p) => (
-                  <li key={p} className="review-card__point review-card__point--pro">
-                    <Check width={13} height={13} /> {p}
+                {review.pros.map((pro) => (
+                  <li key={pro} className="review-card__point review-card__point--pro">
+                    <Check width={13} height={13} /> {pro}
                   </li>
                 ))}
-                {r.cons.map((c) => (
-                  <li key={c} className="review-card__point review-card__point--con">
-                    <Minus width={13} height={13} /> {c}
+                {review.cons.map((con) => (
+                  <li key={con} className="review-card__point review-card__point--con">
+                    <Minus width={13} height={13} /> {con}
                   </li>
                 ))}
               </ul>

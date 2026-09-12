@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
-import { ArrowRight } from './icons.jsx'
+import Chip from '../ui/Chip.tsx'
+import { ArrowRight } from '../ui/icons.tsx'
 
 const facets = [
   {
@@ -17,17 +18,21 @@ const facets = [
     label: 'Games',
     options: ['Slots', 'Live dealers', 'Blackjack', 'Roulette', 'Poker'],
   },
-]
+] as const
+
+type FacetKey = (typeof facets)[number]['key']
+
+type Picked = Partial<Record<FacetKey, readonly string[]>>
 
 // Illustrative index sizes for the demo count — the full engine ships after sign-up.
 const BASE_COUNT = 214
 
 export default function FindMatch() {
-  const [picked, setPicked] = useState({})
+  const [picked, setPicked] = useState<Picked>({})
 
-  const toggle = (facet, option) =>
+  const toggle = (facet: FacetKey, option: string) =>
     setPicked((prev) => {
-      const current = prev[facet] || []
+      const current = prev[facet] ?? []
       const next = current.includes(option)
         ? current.filter((o) => o !== option)
         : [...current, option]
@@ -60,16 +65,11 @@ export default function FindMatch() {
               <p className="finder__facet-label">{facet.label}</p>
               <div className="chip-row chip-row--scroll" role="group" aria-label={facet.label}>
                 {facet.options.map((option) => {
-                  const active = (picked[facet.key] || []).includes(option)
+                  const active = (picked[facet.key] ?? []).includes(option)
                   return (
-                    <button
-                      key={option}
-                      className={`chip ${active ? 'is-active' : ''}`}
-                      aria-pressed={active}
-                      onClick={() => toggle(facet.key, option)}
-                    >
+                    <Chip key={option} active={active} onToggle={() => toggle(facet.key, option)}>
                       {option}
-                    </button>
+                    </Chip>
                   )
                 })}
               </div>

@@ -1,7 +1,24 @@
 # Shortlist — casino matcher landing
 
-React + Vite landing page with a full analytics layer: Meta Pixel, GA4 / Google Ads
-(gtag), GTM (dataLayer) and UTM / Click ID attribution.
+React + TypeScript + Vite landing page with a full analytics layer: Meta Pixel,
+GA4 / Google Ads (gtag), GTM (dataLayer) and UTM / Click ID attribution.
+
+```
+src/
+├── components/
+│   ├── layout/     # Header, Footer
+│   ├── sections/   # page sections top-to-bottom (Hero … LeadForm)
+│   └── ui/         # shared primitives (icons, Chip)
+├── data/           # casino index data + matching logic
+├── hooks/          # useReveal (scroll-reveal)
+├── lib/            # tracking (analytics layer)
+├── styles/         # global.css, app.css
+└── types/          # domain types + ambient declarations
+```
+
+```bash
+npm run typecheck   # tsc project references, strict mode
+```
 
 ```bash
 npm install
@@ -12,8 +29,8 @@ npm run preview  # serve the built site
 
 ## Analytics
 
-All tracking lives in `src/lib/tracking.js`; it is initialised once in
-`src/main.jsx` before React renders.
+All tracking lives in `src/lib/tracking.ts`; it is initialised once in
+`src/main.tsx` before React renders.
 
 **Configuration** — copy `.env.example` to `.env` and fill in real IDs.
 Vendors with an empty ID are skipped; the dataLayer, UTM capture, hidden form
@@ -43,7 +60,7 @@ reads `utm_source/medium/campaign/term/content`, `fbclid`, `gclid`, `gbraid`,
 `wbraid`, `ttclid`, `msclkid` from the query string and persists them in
 `localStorage` (`sl_tracking`, first-touch wins). They are then:
 
-- injected as hidden inputs into the lead form (`src/components/LeadForm.jsx`),
+- injected as hidden inputs into the lead form (`src/components/sections/LeadForm.tsx`),
 - attached to every dataLayer push and to the GA4 `generate_lead` params,
 - logged to the console (`[tracking] …`).
 

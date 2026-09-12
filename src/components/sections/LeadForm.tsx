@@ -1,17 +1,18 @@
-import { useState } from 'react'
-import { getTrackingParams, trackLead } from '../lib/tracking.js'
-import { ArrowRight, Check } from './icons.jsx'
+import { useState, type FormEvent } from 'react'
+import { getTrackingParams, trackLead } from '../../lib/tracking.ts'
+import { ArrowRight, Check } from '../ui/icons.tsx'
 
 export default function LeadForm() {
   const [submitted, setSubmitted] = useState(false)
-  const tracking = getTrackingParams()
+  // Lazy init: parse localStorage once, not on every render.
+  const [tracking] = useState(getTrackingParams)
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
     trackLead({
-      lead_name: data.get('name'),
-      lead_email: data.get('email'),
+      lead_name: String(data.get('name') ?? ''),
+      lead_email: String(data.get('email') ?? ''),
     })
     setSubmitted(true)
   }

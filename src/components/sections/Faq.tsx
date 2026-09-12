@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { faqs } from '../data/casinos.js'
-import { Plus } from './icons.jsx'
+import { faqs } from '../../data/casinos.ts'
+import { Plus } from '../ui/icons.tsx'
 
 export default function Faq() {
-  const [openIndex, setOpenIndex] = useState(0)
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (
     <section className="section section--tinted" id="faq">
@@ -19,17 +19,17 @@ export default function Faq() {
           {faqs.map((item, i) => {
             const open = openIndex === i
             return (
-              <div key={item.q} className={`faq__item ${open ? 'is-open' : ''}`}>
+              <div key={item.question} className={`faq__item ${open ? 'is-open' : ''}`}>
                 <button
                   className="faq__q"
                   aria-expanded={open}
-                  onClick={() => setOpenIndex(open ? -1 : i)}
+                  onClick={() => setOpenIndex(open ? null : i)}
                 >
-                  <span>{item.q}</span>
+                  <span>{item.question}</span>
                   <Plus className="faq__icon" width={18} height={18} />
                 </button>
                 <div className="faq__a-wrap">
-                  <p className="faq__a">{item.a}</p>
+                  <p className="faq__a">{item.answer}</p>
                 </div>
               </div>
             )

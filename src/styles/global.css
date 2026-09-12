@@ -48,6 +48,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* sticky header is 64px — keep anchored sections clear of it */
+  scroll-padding-top: 84px;
 }
 
 body {

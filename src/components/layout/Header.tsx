@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 
-const links = [
+interface NavLink {
+  readonly href: string
+  readonly label: string
+}
+
+const links: readonly NavLink[] = [
   { href: '#offers', label: 'Top offers' },
   { href: '#how-it-works', label: 'How it works' },
   { href: '#reviews', label: 'Reviews' },

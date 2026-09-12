@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 // Adds .is-visible to any [data-reveal] element as it enters the viewport.
 // CSS decides what "revealing" looks like; reduced-motion users get no movement.
-export function useReveal() {
+export function useReveal(): void {
   useEffect(() => {
     const els = document.querySelectorAll('[data-reveal]')
     if (!('IntersectionObserver' in window)) {
