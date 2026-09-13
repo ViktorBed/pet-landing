@@ -1,5 +1,6 @@
 import { casinos } from '../../data/casinos.ts'
 import { ArrowRight, Clock } from '../ui/icons.tsx'
+import TiltCard from '../ui/TiltCard.tsx'
 
 const top = casinos.slice(0, 3)
 
@@ -22,11 +23,11 @@ export default function Offers() {
           {top.map((casino, i) => {
             const featured = i === 0
             return (
-              <article
+              <TiltCard
+                as="article"
                 key={casino.id}
                 className={`offer-card ${featured ? 'offer-card--featured' : ''}`}
-                data-reveal
-                style={{ '--reveal-delay': `${i * 90}ms` }}
+                delay={i * 0.09}
               >
                 {featured && <span className="offer-card__flag">Editor’s choice</span>}
                 <header className="offer-card__head">
@@ -76,7 +77,7 @@ export default function Offers() {
                   <ArrowRight />
                 </a>
                 <p className="offer-card__terms">18+ · New players · Full T&amp;Cs apply</p>
-              </article>
+              </TiltCard>
             )
           })}
         </div>

@@ -1,5 +1,6 @@
 import { reviews } from '../../data/casinos.ts'
 import { ArrowRight, Check, Minus } from '../ui/icons.tsx'
+import TiltCard from '../ui/TiltCard.tsx'
 
 export default function Reviews() {
   return (
@@ -17,12 +18,7 @@ export default function Reviews() {
 
         <div className="reviews__row">
           {reviews.map((review, i) => (
-            <article
-              key={review.id}
-              className="review-card"
-              data-reveal
-              style={{ '--reveal-delay': `${i * 90}ms` }}
-            >
+            <TiltCard as="article" key={review.id} className="review-card" delay={i * 0.09}>
               <header className="review-card__head">
                 <span className={`monogram monogram--sm monogram--${review.tone}`}>
                   {review.monogram}
@@ -49,7 +45,7 @@ export default function Reviews() {
               <a href="#lead-form" className="review-card__link">
                 Read full review <ArrowRight width={14} height={14} />
               </a>
-            </article>
+            </TiltCard>
           ))}
         </div>
       </div>

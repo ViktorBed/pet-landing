@@ -1,20 +1,23 @@
 :root {
-  /* palette — premium editorial iGaming, dark only by design */
-  --bg: #131418;
-  --bg-2: #17191e;
-  --card: #1a1c22;
-  --card-2: #20232b;
-  --line: #262932;
+  /* palette — Crimson Night: casino scarlet + champagne gold on near-black, dark only by design */
+  --bg: #060708;
+  --bg-2: #0a0b0d;
+  --card: #0e0f12;
+  --card-2: #131418;
+  --line: #1e2026;
   --line-soft: rgba(255, 255, 255, 0.06);
-  --ink: #eff1f4;
-  --ink-2: #a9aeb9;
-  --ink-3: #737985;
-  --lime: #cff541;
-  --lime-soft: rgba(207, 245, 65, 0.12);
-  --lime-ink: #131503;
-  --gold: #d6c08f;
-  --gold-2: #a08a5e;
-  --gold-soft: rgba(214, 192, 143, 0.12);
+  --ink: #f2f3f5;
+  --ink-2: #a3a8b3;
+  --ink-3: #7f8794;
+  /* --lime* names kept (they feed the Tone type and ~30 rules); they now hold the crimson accent */
+  --lime: #ff4d5e;
+  --lime-soft: rgba(255, 77, 94, 0.12);
+  --lime-ink: #ffffff;
+  /* deeper fill for solid CTAs — white text needs more depth than the text-accent tone */
+  --lime-fill: #e5333f;
+  --gold: #e8cf9b;
+  --gold-2: #c9a961;
+  --gold-soft: rgba(232, 207, 155, 0.12);
 
   --font-display: 'Archivo', 'Instrument Sans', system-ui, sans-serif;
   --font-body: 'Instrument Sans', system-ui, -apple-system, sans-serif;

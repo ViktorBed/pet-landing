@@ -6,10 +6,10 @@
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(52vw 42vh at 82% 4%, rgba(207, 245, 65, 0.13), transparent 68%),
-    radial-gradient(46vw 40vh at 4% 32%, rgba(214, 192, 143, 0.12), transparent 66%),
-    radial-gradient(50vw 46vh at 70% 80%, rgba(159, 134, 255, 0.11), transparent 70%),
-    radial-gradient(38vw 30vh at 30% 92%, rgba(207, 245, 65, 0.075), transparent 70%);
+    radial-gradient(52vw 42vh at 82% 4%, rgba(229, 51, 63, 0.11), transparent 68%),
+    radial-gradient(46vw 40vh at 4% 32%, rgba(232, 207, 155, 0.08), transparent 66%),
+    radial-gradient(50vw 46vh at 70% 80%, rgba(201, 24, 43, 0.06), transparent 70%),
+    radial-gradient(38vw 30vh at 30% 92%, rgba(229, 51, 63, 0.055), transparent 70%);
 }
 
 /* ---------- layout primitives ---------- */
@@ -47,6 +47,24 @@
   margin: 10px 0 14px;
 }
 
+/* heads without a sub-line (e.g. How it works) shouldn't stack h2's own
+   margin on top of the block gap */
+.section__head h2:last-child {
+  margin-bottom: 0;
+}
+
+/* on mobile the steps stack right under the heading and need breathing room;
+   on desktop the two-column layout sits flush (per design) */
+#how-it-works .section__head {
+  margin-bottom: 28px;
+}
+
+@media (min-width: 960px) {
+  #how-it-works .section__head {
+    margin-bottom: 0;
+  }
+}
+
 .section__head h2 em,
 .hero__title em,
 .lead h2 em,
@@ -56,7 +74,7 @@
   font-weight: 400;
   font-stretch: normal;
   letter-spacing: 0;
-  color: var(--gold);
+  color: var(--lime);
 }
 
 .section__sub {
@@ -73,7 +91,26 @@
 }
 
 .eyebrow--gold {
-  color: var(--gold);
+  color: var(--lime);
+}
+
+/* cursor-following glare rendered by TiltCard; revealed on hover only */
+.card-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+:hover > .card-glare {
+  opacity: 1;
+}
+
+.hero__float {
+  width: min(380px, 100%);
 }
 
 /* reveal-on-scroll */
@@ -123,13 +160,13 @@
 }
 
 .btn--primary {
-  background: var(--lime);
+  background: var(--lime-fill);
   color: var(--lime-ink);
-  box-shadow: 0 0 0 0 rgba(207, 245, 65, 0);
+  box-shadow: 0 0 0 0 rgba(229, 51, 63, 0);
 }
 
 .btn--primary:hover {
-  box-shadow: 0 6px 28px -6px rgba(207, 245, 65, 0.45);
+  box-shadow: 0 6px 28px -6px rgba(229, 51, 63, 0.5);
 }
 
 .btn--ghost {
@@ -211,7 +248,7 @@
     background 0.15s ease;
 }
 
-button.chip:hover {
+button.chip:not(.is-active):hover {
   border-color: var(--ink-3);
   color: var(--ink);
 }
@@ -256,12 +293,12 @@ button.chip:hover {
 }
 
 .monogram--lime {
-  background: linear-gradient(135deg, rgba(207, 245, 65, 0.22), rgba(207, 245, 65, 0.05));
+  background: linear-gradient(135deg, rgba(255, 77, 94, 0.22), rgba(255, 77, 94, 0.05));
   color: var(--lime);
 }
 
 .monogram--gold {
-  background: linear-gradient(135deg, rgba(214, 192, 143, 0.25), rgba(214, 192, 143, 0.05));
+  background: linear-gradient(135deg, rgba(232, 207, 155, 0.25), rgba(232, 207, 155, 0.05));
   color: var(--gold);
 }
 
@@ -281,7 +318,7 @@ button.chip:hover {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(19, 20, 24, 0.55);
+  background: rgba(6, 7, 8, 0.55);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   border-bottom: 1px solid transparent;
@@ -416,10 +453,35 @@ button.chip:hover {
 .hero__glow {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(720px 420px at 85% 10%, rgba(207, 245, 65, 0.07), transparent 65%),
-    radial-gradient(560px 380px at 8% 88%, rgba(214, 192, 143, 0.06), transparent 65%);
   pointer-events: none;
+  /* blobs get clipped by the hero's overflow: hidden — fade them out before
+     they reach the bottom edge so the glow never ends in a hard line */
+  -webkit-mask-image: linear-gradient(to bottom, #000 65%, transparent 98%);
+  mask-image: linear-gradient(to bottom, #000 65%, transparent 98%);
+}
+
+/* drifting circles animated by motion; transform is motion-driven */
+.hero__blob {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.hero__blob--rose {
+  width: 720px;
+  height: 420px;
+  top: -12%;
+  right: -18%;
+  background: radial-gradient(closest-side, rgba(229, 51, 63, 0.09), transparent 70%);
+}
+
+.hero__blob--gold {
+  width: 560px;
+  height: 380px;
+  bottom: 2%;
+  left: -12%;
+  background: radial-gradient(closest-side, rgba(232, 207, 155, 0.07), transparent 70%);
 }
 
 .hero__inner {
@@ -484,13 +546,13 @@ button.chip:hover {
   position: absolute;
   width: 340px;
   height: 340px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: calc(50% - 170px);
+  left: calc(50% - 170px);
+  /* transform is motion-driven (slow spin + pulse) — don't position with it */
   border-radius: 50%;
   background:
-    radial-gradient(closest-side, rgba(207, 245, 65, 0.14), transparent 70%),
-    conic-gradient(from 210deg, transparent 0deg, rgba(214, 192, 143, 0.25) 90deg, transparent 180deg);
+    radial-gradient(closest-side, rgba(229, 51, 63, 0.16), transparent 70%),
+    conic-gradient(from 210deg, transparent 0deg, rgba(232, 207, 155, 0.25) 90deg, transparent 180deg);
   filter: blur(2px);
   pointer-events: none;
 }
@@ -614,14 +676,6 @@ button.chip:hover {
 .match-card__bonus {
   font-size: 0.86rem;
   font-weight: 600;
-  color: var(--gold);
-}
-
-.match-card__cta {
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--lime);
 }
 
@@ -653,19 +707,19 @@ button.chip:hover {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 24px 20px 20px;
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
+  /* transform is motion-driven (TiltCard); CSS only transitions the border */
+  transition: border-color 0.2s ease;
 }
 
-.offer-card:hover {
-  transform: translateY(-3px);
+.offer-card:hover,
+.review-card:hover,
+.trust-card:hover {
   border-color: var(--ink-3);
 }
 
 .offer-card--featured {
-  border-color: rgba(214, 192, 143, 0.45);
-  background: linear-gradient(170deg, rgba(214, 192, 143, 0.06), var(--card) 45%);
+  border-color: rgba(232, 207, 155, 0.45);
+  background: linear-gradient(170deg, rgba(232, 207, 155, 0.06), var(--card) 45%);
 }
 
 .offer-card__flag {
@@ -674,8 +728,8 @@ button.chip:hover {
   left: 20px;
   padding: 3px 12px;
   border-radius: 999px;
-  background: var(--gold);
-  color: #1c1708;
+  background: var(--lime-fill);
+  color: #ffffff;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -699,7 +753,7 @@ button.chip:hover {
 
 .offer-card__verdict {
   font-size: 0.8rem;
-  color: var(--gold);
+  color: var(--lime);
   margin-top: 2px;
 }
 
@@ -727,7 +781,7 @@ button.chip:hover {
   font-family: var(--font-display);
   font-weight: 600;
   font-stretch: 105%;
-  font-size: 1.06rem;
+  font-size: 0.92rem;
   line-height: 1.35;
 }
 
@@ -765,6 +819,11 @@ button.chip:hover {
 
 .offer-card__tags {
   margin-top: -4px;
+}
+
+/* pin CTA + terms to the card bottom so all three cards align in the grid */
+.offer-card > .btn {
+  margin-top: auto;
 }
 
 .offer-card__terms {
@@ -811,7 +870,7 @@ button.chip:hover {
   font-family: var(--font-display);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--gold);
+  color: var(--lime);
   flex-shrink: 0;
 }
 
@@ -840,6 +899,13 @@ button.chip:hover {
   text-transform: uppercase;
   color: var(--ink-3);
   margin-bottom: 14px;
+}
+
+@media (max-width: 480px) {
+  .hiw__demo-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
 }
 
 .hiw__chips {
@@ -952,14 +1018,10 @@ button.chip:hover {
   display: flex;
   gap: 14px;
   margin-top: 28px;
-  padding: 18px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(214, 192, 143, 0.3);
-  background: var(--gold-soft);
 }
 
 .trust__badge svg {
-  color: var(--gold);
+  color: var(--lime);
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -967,7 +1029,7 @@ button.chip:hover {
 .trust__badge-title {
   font-weight: 700;
   font-size: 0.92rem;
-  color: var(--gold);
+  color: var(--lime);
 }
 
 .trust__badge-text {
@@ -982,10 +1044,12 @@ button.chip:hover {
 }
 
 .trust-card {
+  position: relative;
   padding: 22px 20px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background: var(--card);
+  transition: border-color 0.2s ease;
 }
 
 .trust-card__icon {
@@ -1094,6 +1158,7 @@ button.chip:hover {
 }
 
 .review-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -1101,6 +1166,7 @@ button.chip:hover {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 22px 20px;
+  transition: border-color 0.2s ease;
 }
 
 .review-card__head {
@@ -1167,7 +1233,7 @@ button.chip:hover {
   gap: 6px;
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--gold);
+  color: var(--lime);
   margin-top: 4px;
   transition: gap 0.15s ease;
 }
@@ -1216,7 +1282,9 @@ button.chip:hover {
 .faq__icon {
   flex-shrink: 0;
   color: var(--ink-3);
-  transition: transform 0.25s ease;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.2s ease;
 }
 
 .faq__item.is-open .faq__icon {
@@ -1227,7 +1295,7 @@ button.chip:hover {
 .faq__a-wrap {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.3s ease;
+  transition: grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .faq__item.is-open .faq__a-wrap {
@@ -1239,10 +1307,23 @@ button.chip:hover {
   padding: 0 18px;
   color: var(--ink-2);
   font-size: 0.92rem;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    padding-bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease;
 }
 
 .faq__item.is-open .faq__a {
   padding-bottom: 18px;
+  opacity: 1;
+  transform: none;
+  /* fade the text in slightly after the panel starts expanding */
+  transition:
+    padding-bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease 0.08s;
 }
 
 /* ---------- lead form ---------- */
@@ -1255,7 +1336,7 @@ button.chip:hover {
 .lead__glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(640px 360px at 50% 0%, rgba(207, 245, 65, 0.06), transparent 70%);
+  background: radial-gradient(640px 360px at 50% 0%, rgba(229, 51, 63, 0.07), transparent 70%);
   pointer-events: none;
 }
 
@@ -1402,7 +1483,7 @@ button.chip:hover {
 }
 
 .footer__legal a {
-  color: var(--gold);
+  color: var(--lime);
   text-decoration: underline;
 }
 
@@ -1414,10 +1495,13 @@ button.chip:hover {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1.5px solid var(--gold);
-  color: var(--gold);
+  border: 1.5px solid var(--lime);
+  color: var(--lime);
   font-weight: 700;
   font-size: 0.8rem;
+  /* digits have no descenders — nudge down to optical center */
+  line-height: 1;
+  padding-top: 2px;
 }
 
 .footer__copy {
@@ -1441,7 +1525,6 @@ button.chip:hover {
 .hiw__demo,
 .finder,
 .trust-card,
-.trust__badge,
 .review-card,
 .faq__item,
 .lead__card {
@@ -1453,6 +1536,8 @@ button.chip:hover {
 }
 
 .offer-card:hover,
+.review-card:hover,
+.trust-card:hover,
 .faq__item.is-open {
   border-color: rgba(255, 255, 255, 0.18);
 }
@@ -1460,16 +1545,11 @@ button.chip:hover {
 .offer-card--featured {
   background: linear-gradient(
     165deg,
-    rgba(214, 192, 143, 0.07) 0%,
+    rgba(232, 207, 155, 0.07) 0%,
     rgba(255, 255, 255, 0.015) 45%,
-    rgba(214, 192, 143, 0.03) 100%
+    rgba(232, 207, 155, 0.03) 100%
   );
-  border-color: rgba(214, 192, 143, 0.3);
-}
-
-.trust__badge {
-  background: linear-gradient(160deg, rgba(214, 192, 143, 0.08), rgba(214, 192, 143, 0.025));
-  border-color: rgba(214, 192, 143, 0.26);
+  border-color: rgba(232, 207, 155, 0.3);
 }
 
 .chip,
@@ -1482,7 +1562,7 @@ button.chip:hover {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
-button.chip:hover,
+button.chip:not(.is-active):hover,
 .btn--ghost:hover,
 .btn--outline:hover {
   background: rgba(255, 255, 255, 0.07);
@@ -1490,9 +1570,14 @@ button.chip:hover,
 }
 
 .chip.is-active {
-  background: rgba(207, 245, 65, 0.1);
-  border-color: rgba(207, 245, 65, 0.75);
+  background: rgba(255, 77, 94, 0.1);
+  border-color: rgba(255, 77, 94, 0.75);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* an active chip still reacts to hover, but stays in its accent colour */
+button.chip.is-active:hover {
+  background: rgba(255, 77, 94, 0.16);
 }
 
 .chip--static {
@@ -1505,14 +1590,14 @@ button.chip:hover,
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset 0 -1px 0 rgba(0, 0, 0, 0.12),
-    0 10px 28px -10px rgba(207, 245, 65, 0.35);
+    0 10px 28px -10px rgba(229, 51, 63, 0.4);
 }
 
 .btn--primary:hover {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset 0 -1px 0 rgba(0, 0, 0, 0.12),
-    0 10px 34px -8px rgba(207, 245, 65, 0.5);
+    0 10px 34px -8px rgba(229, 51, 63, 0.55);
 }
 
 .field__input {
@@ -1532,7 +1617,7 @@ button.chip:hover,
 }
 
 .lead__thanks-icon {
-  background: rgba(207, 245, 65, 0.08);
+  background: rgba(255, 77, 94, 0.08);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);

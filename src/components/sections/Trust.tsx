@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 import { Clock, FileText, Scale, Shield, type IconProps } from '../ui/icons.tsx'
+import TiltCard from '../ui/TiltCard.tsx'
 
 interface Pillar {
   readonly icon: FC<IconProps>
@@ -58,18 +59,13 @@ export default function Trust() {
 
           <div className="trust__grid">
             {pillars.map((pillar, i) => (
-              <article
-                key={pillar.title}
-                className="trust-card"
-                data-reveal
-                style={{ '--reveal-delay': `${i * 80}ms` }}
-              >
+              <TiltCard as="article" key={pillar.title} className="trust-card" delay={i * 0.08}>
                 <span className="trust-card__icon">
                   <pillar.icon width={20} height={20} />
                 </span>
                 <h3 className="trust-card__title">{pillar.title}</h3>
                 <p className="trust-card__text">{pillar.text}</p>
-              </article>
+              </TiltCard>
             ))}
           </div>
         </div>
