@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import LogoMark from '../ui/LogoMark.tsx'
 
 interface NavLink {
   readonly href: string
@@ -23,11 +24,27 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // fullscreen mobile menu — freeze the page behind it. Removing the scrollbar
+  // changes the layout width, which would derail an in-flight smooth anchor
+  // scroll — pad the body by the scrollbar width so the layout never shifts.
+  useEffect(() => {
+    if (open) {
+      const gutter = window.innerWidth - document.documentElement.clientWidth
+      document.body.style.overflow = 'hidden'
+      if (gutter > 0) document.body.style.paddingRight = `${gutter}px`
+    }
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.paddingRight = ''
+    }
+  }, [open])
+
   return (
     <header className={`header ${scrolled ? 'is-scrolled' : ''}`}>
       <div className="container header__inner">
         <a href="#top" className="header__logo" aria-label="Shortlist — home">
-          Shortlist<span className="header__logo-dot">.</span>
+          <LogoMark size={36} />
+          Shortlist
         </a>
 
         <nav className={`header__nav ${open ? 'is-open' : ''}`} aria-label="Main">

@@ -2,13 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KPX2ZJLN');</script>
-    <!-- End Google Tag Manager -->
+    <!-- GTM + Meta Pixel base code — external file so CSP script-src can stay
+         free of 'unsafe-inline' (IDs live inside init-analytics.js) -->
+    <script src="/init-analytics.js"></script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -22,20 +18,26 @@
       rel="stylesheet"
     />
     <title>Shortlist — Find the casino that actually fits you</title>
-    <!-- Meta Pixel Code -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '1119426050436499');
-      fbq('track', 'PageView');
-    </script>
-    <!-- End Meta Pixel Code -->
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Shortlist" />
+    <meta property="og:url" content="https://pet-landing.vercel.app/" />
+    <meta property="og:title" content="Shortlist — Find the casino that actually fits you" />
+    <meta
+      property="og:description"
+      content="The independent casino index. We test payout speeds, verify licences and read the bonus small print, then match you with your top three casinos in under a minute."
+    />
+    <meta property="og:image" content="https://pet-landing.vercel.app/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Shortlist — Find the casino that actually fits you" />
+    <meta
+      name="twitter:description"
+      content="The independent casino index. We test payout speeds, verify licences and read the bonus small print, then match you with your top three casinos in under a minute."
+    />
+    <meta name="twitter:image" content="https://pet-landing.vercel.app/og.jpg" />
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->

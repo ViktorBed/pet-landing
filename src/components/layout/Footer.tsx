@@ -1,3 +1,6 @@
+import { contacts } from '../../data/contacts.ts'
+import LogoMark from '../ui/LogoMark.tsx'
+
 export default function Footer() {
   return (
     <footer className="footer">
@@ -5,15 +8,23 @@ export default function Footer() {
         <div className="footer__top">
           <div className="footer__brand">
             <p className="footer__logo">
-              Shortlist<span>.</span>
+              <LogoMark size={36} />
+              Shortlist
             </p>
             <p className="footer__tag">The independent casino index. Tested, timed, translated.</p>
+            <address className="footer__contacts">
+              <a href={contacts.phoneHref}>{contacts.phone}</a>
+              <a href={contacts.emailHref}>{contacts.email}</a>
+              <span>{contacts.address}</span>
+            </address>
           </div>
           <nav className="footer__nav" aria-label="Footer">
             <a href="#offers">Top offers</a>
             <a href="#how-it-works">How it works</a>
             <a href="#reviews">Reviews</a>
             <a href="#faq">FAQ</a>
+            <a href="/terms.html">Terms of Use</a>
+            <a href="/privacy.html">Privacy Policy</a>
           </nav>
         </div>
 

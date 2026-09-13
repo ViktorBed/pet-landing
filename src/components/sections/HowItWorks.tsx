@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react'
 import { casinos, matchScore, preferenceOptions } from '../../data/casinos.ts'
 import type { FeatureKey } from '../../types/casino.ts'
 import Chip from '../ui/Chip.tsx'
-import { Check } from '../ui/icons.tsx'
 
 interface Step {
   readonly n: string
@@ -68,15 +67,15 @@ export default function HowItWorks() {
           <div className="hiw__demo" data-reveal>
             <p className="hiw__demo-label">Try it — tap what matters to you</p>
             <div className="chip-row hiw__chips" role="group" aria-label="Your priorities">
-              {preferenceOptions.map((opt) => {
-                const active = selected.includes(opt.key)
-                return (
-                  <Chip key={opt.key} active={active} onToggle={() => toggle(opt.key)}>
-                    {active && <Check width={13} height={13} />}
-                    {opt.label}
-                  </Chip>
-                )
-              })}
+              {preferenceOptions.map((opt) => (
+                <Chip
+                  key={opt.key}
+                  active={selected.includes(opt.key)}
+                  onToggle={() => toggle(opt.key)}
+                >
+                  {opt.label}
+                </Chip>
+              ))}
             </div>
 
             <div className="rank-list" style={{ '--rows': ranked.length }}>

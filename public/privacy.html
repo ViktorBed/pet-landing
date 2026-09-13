@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Privacy Policy — Shortlist</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: #060708; color: #a3a8b3;
+      font-family: 'Instrument Sans', system-ui, sans-serif;
+      font-size: 0.95rem; line-height: 1.65;
+    }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 24px 20px 80px; }
+    a { color: #ff4d5e; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .logo { display: inline-flex; align-items: center; gap: 9px; font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 1.25rem; color: #f2f3f5; letter-spacing: -0.02em; }
+    .logo:hover { text-decoration: none; }
+    h1 { font-family: 'Archivo', sans-serif; color: #f2f3f5; font-size: 2rem; margin: 36px 0 6px; }
+    h2 { font-family: 'Archivo', sans-serif; color: #f2f3f5; font-size: 1.15rem; margin: 32px 0 10px; }
+    .updated { color: #7f8794; font-size: 0.82rem; }
+    ul { padding-left: 20px; }
+    .contact-box {
+      margin-top: 40px; padding: 20px; border: 1px solid #1e2026; border-radius: 15px;
+      background: #0e0f12;
+    }
+    .contact-box p { margin: 4px 0; }
+
+    /* ---------- header (mirrors the main site) ---------- */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(6, 7, 8, 0.55);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .topbar { border-bottom: 1px solid rgba(255, 255, 255, 0.06); background: rgba(6, 7, 8, 0.4); }
+    .topbar__inner { display: flex; justify-content: flex-end; gap: 20px; min-height: 30px; align-items: center; font-size: 0.78rem; }
+    .topbar__inner a { color: #7f8794; }
+    .topbar__inner a:hover { color: #f2f3f5; text-decoration: none; }
+    .site-header__inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+    .site-nav { display: none; gap: 22px; }
+    .site-nav a { color: #a3a8b3; font-size: 0.92rem; font-weight: 500; }
+    .site-nav a:hover { color: #f2f3f5; text-decoration: none; }
+    @media (min-width: 820px) { .site-nav { display: flex; } }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 40px; padding: 8px 20px; border-radius: 999px;
+      background: #e5333f; color: #fff; font-weight: 600; font-size: 0.9rem;
+      transition: box-shadow 0.15s ease;
+    }
+    .btn:hover { text-decoration: none; box-shadow: 0 6px 28px -6px rgba(229, 51, 63, 0.5); }
+
+    /* ---------- footer (mirrors the main site) ---------- */
+    .site-footer { border-top: 1px solid rgba(255, 255, 255, 0.06); background: #0a0b0d; padding: 48px 0 32px; }
+    .footer__top { display: flex; flex-direction: column; gap: 24px; padding-bottom: 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+    @media (min-width: 820px) { .footer__top { flex-direction: row; justify-content: space-between; align-items: flex-start; } }
+    .footer__logo { margin: 0; font-size: 1.2rem; }
+    .footer__tag { font-size: 0.85rem; color: #7f8794; margin: 6px 0 0; }
+    .footer__contacts { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; font-style: normal; font-size: 0.88rem; }
+    .footer__contacts a, .footer__contacts span { color: #a3a8b3; }
+    .footer__contacts a:hover { color: #f2f3f5; text-decoration: none; }
+    .footer__nav { display: flex; flex-wrap: wrap; gap: 18px; }
+    .footer__nav a { font-size: 0.88rem; color: #a3a8b3; }
+    .footer__nav a:hover { color: #f2f3f5; text-decoration: none; }
+    .footer__legal { display: flex; gap: 14px; align-items: flex-start; padding-top: 24px; font-size: 0.8rem; color: #7f8794; }
+    .footer__legal p { margin: 0; }
+    .footer__legal a { color: #ff4d5e; text-decoration: underline; }
+    .footer__age {
+      flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid #ff4d5e;
+      color: #ff4d5e; font-weight: 700; font-size: 0.8rem; line-height: 1; padding-top: 2px;
+    }
+    .footer__copy { margin-top: 24px; font-size: 0.75rem; color: #7f8794; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="topbar">
+      <div class="container topbar__inner">
+        <a href="tel:+380675550177">+380 67 555 01 77</a>
+        <a href="mailto:hello@shortlist.site">hello@shortlist.site</a>
+      </div>
+    </div>
+    <div class="container site-header__inner">
+      <a class="logo" href="/" aria-label="Shortlist — home">
+        <img src="/favicon.svg" width="32" height="32" alt="" />
+        Shortlist
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="/#offers">Top offers</a>
+        <a href="/#how-it-works">How it works</a>
+        <a href="/#reviews">Reviews</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+      <a href="/#lead-form" class="btn">Find my casino</a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: 13 September 2026</p>
+
+    <h2>1. Who we are</h2>
+    <p>Shortlist ("we", "us") operates this website from 20 Sichovykh Striltsiv St. (coworking), Lviv, 79000, Ukraine. This policy explains what personal data we collect, why, and what rights you have.</p>
+
+    <h2>2. Data we collect</h2>
+    <ul>
+      <li><strong style="color:#f2f3f5">Data you give us</strong> — your name and email address when you request your personal shortlist through the form on our site.</li>
+      <li><strong style="color:#f2f3f5">Data collected automatically</strong> — usage and device data via Google Tag Manager / Google Analytics and Meta Pixel (pages viewed, approximate location, device type, referral source), plus advertising identifiers where you have consented.</li>
+    </ul>
+
+    <h2>3. How we use it</h2>
+    <ul>
+      <li>To email you the casino shortlist you requested and occasional follow-up offers (you can unsubscribe with one click in any email).</li>
+      <li>To measure site performance and improve our content.</li>
+      <li>To measure the effectiveness of our advertising.</li>
+    </ul>
+
+    <h2>4. Legal basis</h2>
+    <p>We process your data on the basis of your consent (form submission, marketing emails) and our legitimate interest in operating and improving the site (analytics).</p>
+
+    <h2>5. Sharing</h2>
+    <p>We do not sell your personal data. It is shared only with the service providers that run our infrastructure and analytics (e.g. Google, Meta, our email delivery provider), each bound by their own data-processing terms.</p>
+
+    <h2>6. Retention</h2>
+    <p>We keep your contact details until you unsubscribe or ask us to delete them, and analytics data for the standard retention period of the respective tool.</p>
+
+    <h2>7. Your rights</h2>
+    <p>You may request access to, correction of, or deletion of your personal data, withdraw consent, or object to processing at any time — just email us. If you are in the EEA/UK you also have the right to lodge a complaint with your supervisory authority.</p>
+
+    <h2>8. Cookies</h2>
+    <p>We use cookies and similar technologies set by Google Tag Manager, Google Analytics and Meta Pixel. You can block cookies in your browser settings; the site keeps working without them.</p>
+
+    <h2>9. Age limit</h2>
+    <p>This site is for adults 18+. We do not knowingly collect data from minors; if you believe a minor has provided us data, contact us and we will delete it.</p>
+
+    <h2>10. Changes</h2>
+    <p>We may update this policy from time to time; the current version is always available on this page.</p>
+
+    <div class="contact-box">
+      <p><strong style="color:#f2f3f5">Contact us</strong></p>
+      <p>Phone: <a href="tel:+380675550177">+380 67 555 01 77</a></p>
+      <p>Email: <a href="mailto:hello@shortlist.site">hello@shortlist.site</a></p>
+      <p>Address: 20 Sichovykh Striltsiv St. (coworking), Lviv, 79000, Ukraine</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer__top">
+        <div>
+          <p class="logo footer__logo">
+            <img src="/favicon.svg" width="28" height="28" alt="" />
+            Shortlist
+          </p>
+          <p class="footer__tag">The independent casino index. Tested, timed, translated.</p>
+          <address class="footer__contacts">
+            <a href="tel:+380675550177">+380 67 555 01 77</a>
+            <a href="mailto:hello@shortlist.site">hello@shortlist.site</a>
+            <span>20 Sichovykh Striltsiv St. (coworking), Lviv, 79000, Ukraine</span>
+          </address>
+        </div>
+        <nav class="footer__nav" aria-label="Footer">
+          <a href="/#offers">Top offers</a>
+          <a href="/#how-it-works">How it works</a>
+          <a href="/#reviews">Reviews</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/terms.html">Terms of Use</a>
+          <a href="/privacy.html">Privacy Policy</a>
+        </nav>
+      </div>
+
+      <div class="footer__legal">
+        <span class="footer__age" aria-label="18 plus only">18+</span>
+        <p>
+          Gambling involves risk. Play responsibly and only with money you can afford to lose.
+          Free, confidential support:
+          <a href="https://www.begambleaware.org" target="_blank" rel="noreferrer noopener">BeGambleAware.org</a>.
+          Shortlist lists licensed operators only and may receive referral fees — fees never affect rankings.
+        </p>
+      </div>
+
+      <p class="footer__copy">© 2026 Shortlist. All rights reserved. This is a demo project.</p>
+    </div>
+  </footer>
+</body>
+</html>
