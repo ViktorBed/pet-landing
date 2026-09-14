@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { getTrackingParams, trackLead } from '../../lib/tracking.ts'
 import { ArrowRight, Check } from '../ui/icons.tsx'
 
@@ -82,8 +83,8 @@ export default function LeadForm() {
                 <ArrowRight />
               </button>
               <p className="lead__fineprint">
-                18+ only. By subscribing you accept our privacy policy. Unsubscribe anytime — one
-                click.
+                18+ only. By subscribing you accept our <Link to="/privacy">privacy policy</Link>.
+                Unsubscribe anytime — one click.
               </p>
             </form>
           </div>

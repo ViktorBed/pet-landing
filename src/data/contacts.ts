@@ -4,4 +4,5 @@ export const contacts = {
   email: 'hello@shortlist.site',
   emailHref: 'mailto:hello@shortlist.site',
   address: '20 Sichovykh Striltsiv St. (coworking), Lviv, 79000, Ukraine',
+  responsibleGamblingUrl: 'https://www.begambleaware.org',
 } as const

@@ -1,4 +1,7 @@
+import { Link } from 'react-router-dom'
 import { contacts } from '../../data/contacts.ts'
+import { sections } from '../../data/nav.ts'
+import AnchorLink from '../ui/AnchorLink.tsx'
 import LogoMark from '../ui/LogoMark.tsx'
 
 export default function Footer() {
@@ -19,12 +22,13 @@ export default function Footer() {
             </address>
           </div>
           <nav className="footer__nav" aria-label="Footer">
-            <a href="#offers">Top offers</a>
-            <a href="#how-it-works">How it works</a>
-            <a href="#reviews">Reviews</a>
-            <a href="#faq">FAQ</a>
-            <a href="/terms.html">Terms of Use</a>
-            <a href="/privacy.html">Privacy Policy</a>
+            {sections.map((section) => (
+              <AnchorLink key={section.id} section={section.id}>
+                {section.label}
+              </AnchorLink>
+            ))}
+            <Link to="/terms">Terms of Use</Link>
+            <Link to="/privacy">Privacy Policy</Link>
           </nav>
         </div>
 
@@ -35,7 +39,7 @@ export default function Footer() {
           <p>
             Gambling involves risk. Play responsibly and only with money you can afford to lose.
             Free, confidential support:{' '}
-            <a href="https://www.begambleaware.org" target="_blank" rel="noreferrer noopener">
+            <a href={contacts.responsibleGamblingUrl} target="_blank" rel="noreferrer noopener">
               BeGambleAware.org
             </a>
             . Shortlist lists licensed operators only and may receive referral fees — fees never

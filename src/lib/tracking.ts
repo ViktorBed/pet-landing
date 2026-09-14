@@ -1,5 +1,8 @@
+import { getStoredConsent } from './consent.ts'
+
 // Analytics layer: Meta Pixel, GA4 / Google Ads (gtag) and GTM (dataLayer),
 // plus first-touch capture of UTM params and click IDs (fbclid, gclid, …).
+// Vendor scripts are consent-gated — see initAnalytics().
 //
 // Set your real IDs below or via a .env file (see .env.example). Vendors with
 // an empty ID are simply skipped — dataLayer events, UTM capture, hidden form
@@ -150,6 +153,17 @@ function loadGtag(ids: readonly string[]): void {
 
 /* ------------------------------------------------------------------ init */
 
+let vendorsLoaded = false
+
+function loadVendors(): void {
+  if (vendorsLoaded) return
+  vendorsLoaded = true
+  if (CONFIG.gtmId) loadGtm(CONFIG.gtmId)
+  if (CONFIG.metaPixelId) loadMetaPixel(CONFIG.metaPixelId)
+  const gtagIds = [CONFIG.ga4Id, CONFIG.googleAdsId].filter(Boolean)
+  if (gtagIds.length > 0) loadGtag(gtagIds)
+}
+
 export function initAnalytics(): void {
   if (window.__slAnalyticsInited) return
   window.__slAnalyticsInited = true
@@ -157,14 +171,26 @@ export function initAnalytics(): void {
   window.dataLayer = window.dataLayer ?? []
   const params = captureTrackingParams()
 
-  if (CONFIG.gtmId) loadGtm(CONFIG.gtmId)
-  if (CONFIG.metaPixelId) loadMetaPixel(CONFIG.metaPixelId)
-  const gtagIds = [CONFIG.ga4Id, CONFIG.googleAdsId].filter(Boolean)
-  if (gtagIds.length > 0) loadGtag(gtagIds)
+  // Consent gate: vendor scripts (GA4/gtag, Meta Pixel, GTM) load now only if
+  // the visitor already opted in. Otherwise they hook into the same
+  // window.slLoadTrackers callback that public/init-analytics.js exposes, so
+  // the banner's single Accept call arms both bootstraps. dataLayer events
+  // pushed before that stay queued and are picked up once GTM loads.
+  const consent = getStoredConsent()
+  if (consent === 'granted') {
+    loadVendors()
+  } else {
+    const bootstrapLoader = window.slLoadTrackers
+    window.slLoadTrackers = () => {
+      bootstrapLoader?.()
+      loadVendors()
+    }
+  }
 
   trackPageView()
 
   console.log('[tracking] init', {
+    consent: consent ?? 'undecided',
     vendors: {
       gtm: CONFIG.gtmId || '(off)',
       meta_pixel: CONFIG.metaPixelId || '(off)',

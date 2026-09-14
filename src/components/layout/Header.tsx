@@ -1,17 +1,7 @@
 import { useEffect, useState } from 'react'
+import { sections } from '../../data/nav.ts'
+import AnchorLink from '../ui/AnchorLink.tsx'
 import LogoMark from '../ui/LogoMark.tsx'
-
-interface NavLink {
-  readonly href: string
-  readonly label: string
-}
-
-const links: readonly NavLink[] = [
-  { href: '#offers', label: 'Top offers' },
-  { href: '#how-it-works', label: 'How it works' },
-  { href: '#reviews', label: 'Reviews' },
-  { href: '#faq', label: 'FAQ' },
-]
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -28,39 +18,51 @@ export default function Header() {
   // changes the layout width, which would derail an in-flight smooth anchor
   // scroll — pad the body by the scrollbar width so the layout never shifts.
   useEffect(() => {
-    if (open) {
-      const gutter = window.innerWidth - document.documentElement.clientWidth
-      document.body.style.overflow = 'hidden'
-      if (gutter > 0) document.body.style.paddingRight = `${gutter}px`
+    if (!open) return
+    const gutter = window.innerWidth - document.documentElement.clientWidth
+    document.body.style.overflow = 'hidden'
+    if (gutter > 0) document.body.style.paddingRight = `${gutter}px`
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
     }
+    window.addEventListener('keydown', onKeyDown)
+
     return () => {
       document.body.style.overflow = ''
       document.body.style.paddingRight = ''
+      window.removeEventListener('keydown', onKeyDown)
     }
   }, [open])
+
+  const closeMenu = () => setOpen(false)
 
   return (
     <header className={`header ${scrolled ? 'is-scrolled' : ''}`}>
       <div className="container header__inner">
-        <a href="#top" className="header__logo" aria-label="Shortlist — home">
+        <AnchorLink section="top" className="header__logo" aria-label="Shortlist — home">
           <LogoMark size={36} />
           Shortlist
-        </a>
+        </AnchorLink>
 
         <nav className={`header__nav ${open ? 'is-open' : ''}`} aria-label="Main">
-          {links.map((link) => (
-            <a key={link.href} href={link.href} onClick={() => setOpen(false)}>
-              {link.label}
-            </a>
+          {sections.map((section) => (
+            <AnchorLink key={section.id} section={section.id} onClick={closeMenu}>
+              {section.label}
+            </AnchorLink>
           ))}
-          <a href="#lead-form" className="btn btn--primary header__nav-cta" onClick={() => setOpen(false)}>
+          <AnchorLink
+            section="lead-form"
+            className="btn btn--primary header__nav-cta"
+            onClick={closeMenu}
+          >
             Find my casino
-          </a>
+          </AnchorLink>
         </nav>
 
-        <a href="#lead-form" className="btn btn--primary header__cta">
+        <AnchorLink section="lead-form" className="btn btn--primary header__cta">
           Find my casino
-        </a>
+        </AnchorLink>
 
         <button
           className="header__burger"

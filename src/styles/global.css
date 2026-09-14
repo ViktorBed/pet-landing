@@ -19,8 +19,8 @@
   --gold-2: #c9a961;
   --gold-soft: rgba(232, 207, 155, 0.12);
 
-  --font-display: 'Archivo', 'Instrument Sans', system-ui, sans-serif;
-  --font-body: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Archivo Variable', 'Instrument Sans Variable', system-ui, sans-serif;
+  --font-body: 'Instrument Sans Variable', system-ui, -apple-system, sans-serif;
   --font-serif: 'Instrument Serif', Georgia, serif;
 
   --container: 1140px;

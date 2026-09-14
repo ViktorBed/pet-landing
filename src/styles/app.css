@@ -1724,3 +1724,122 @@ button.chip.is-active:hover {
 .rank-row__bar {
   background: rgba(255, 255, 255, 0.1);
 }
+
+/* ---------- legal pages (terms, privacy) ---------- */
+
+/* column width and side padding come from .container--narrow on the same
+   element — .legal adds only vertical rhythm and typography */
+.legal {
+  padding-top: 48px;
+  padding-bottom: 80px;
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+
+.legal h1 {
+  font-size: 2rem;
+  margin-bottom: 6px;
+}
+
+.legal h2 {
+  font-size: 1.15rem;
+  margin: 32px 0 10px;
+}
+
+.legal p {
+  margin: 10px 0;
+}
+
+.legal ul {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.legal li {
+  margin: 6px 0;
+}
+
+.legal strong {
+  color: var(--ink);
+}
+
+.legal a {
+  color: var(--lime);
+}
+
+.legal a:hover {
+  text-decoration: underline;
+}
+
+.legal__updated {
+  color: var(--ink-3);
+  font-size: 0.82rem;
+}
+
+.legal__contact {
+  margin-top: 40px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+}
+
+.legal__contact p {
+  margin: 4px 0;
+}
+
+/* ---------- cookie consent banner ---------- */
+
+.consent {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+
+.consent__text {
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+
+.consent__text a {
+  color: var(--lime);
+  text-decoration: underline;
+}
+
+.consent__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.consent__btn {
+  flex: 1;
+}
+
+@media (min-width: 640px) {
+  .consent {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .consent__actions {
+    flex-shrink: 0;
+  }
+
+  .consent__btn {
+    flex: none;
+  }
+}
