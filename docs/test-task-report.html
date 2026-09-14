@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<title>Тестове завдання — Marketing Web Designer — Звіт</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 10.5pt; line-height: 1.55; color: #1a1d23; margin: 0;
+  }
+  h1 { font-size: 19pt; margin: 0 0 4px; color: #0f1115; }
+  h2 { font-size: 14pt; margin: 26px 0 8px; color: #0f1115; border-bottom: 2px solid #e5333f; padding-bottom: 4px; }
+  h3 { font-size: 11.5pt; margin: 18px 0 6px; color: #0f1115; }
+  p { margin: 6px 0; }
+  .sub { color: #5a6270; font-size: 10pt; margin-bottom: 18px; }
+  a { color: #c9182b; text-decoration: none; }
+  code, .code {
+    font-family: Consolas, 'Courier New', monospace; font-size: 9pt;
+    background: #f3f4f6; padding: 1px 5px; border-radius: 4px; word-break: break-all;
+  }
+  .block {
+    font-family: Consolas, monospace; font-size: 9pt; background: #f3f4f6;
+    border-left: 3px solid #e5333f; padding: 8px 12px; border-radius: 4px;
+    margin: 8px 0; word-break: break-all;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 9.5pt; }
+  th, td { border: 1px solid #d4d7dd; padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #f3f4f6; font-weight: 600; }
+  ul, ol { margin: 6px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  .note {
+    background: #fdf1f2; border: 1px solid #f2c7cb; border-radius: 6px;
+    padding: 10px 14px; margin: 10px 0; font-size: 10pt;
+  }
+  .pagebreak { page-break-before: always; }
+  strong { color: #0f1115; }
+</style>
+</head>
+<body>
+
+<h1>Тестове завдання — Marketing Web Designer</h1>
+<p class="sub">Звіт по Завданню 1 (налаштування трекінгу) та повна відповідь на Завдання 2</p>
+
+<p><strong>Лендинг:</strong> <a href="https://pet-landing.vercel.app/">https://pet-landing.vercel.app/</a><br/>
+<strong>Репозиторій:</strong> <a href="https://github.com/ViktorBed/pet-landing">https://github.com/ViktorBed/pet-landing</a> (React 19 + TypeScript + Vite)</p>
+
+<h2>Завдання 1 — що зроблено</h2>
+<ul>
+  <li>Лендинг у ніші casino-агрегатора: hero з оффером, ранжування казино, інтерактивний підбір, відгуки, FAQ — шлях paid traffic → landing → lead. Mobile-first, перевірено на 390 / 768 / 1280 px.</li>
+  <li>Лід-форма (ім'я + email) з прихованими полями атрибуції; подія <b>Lead</b> генерується строго при відправці форми.</li>
+  <li>Thank-you стан: конверсійна подія спрацьовує один раз у момент переходу до стану подяки, <b>не</b> повторюється при оновленні сторінки.</li>
+  <li>React (бонусний пункт), маршрути /terms і /privacy, code splitting, self-hosted шрифти, security-заголовки (CSP без unsafe-inline у script-src, HSTS, X-Frame-Options/frame-ancestors), robots.txt, sitemap.xml.</li>
+  <li>GDPR: cookie-consent банер з Google Consent Mode v2 — жоден трекер не завантажується до згоди.</li>
+  <li>Якість: 27 юніт-тестів (Vitest) на логіку атрибуції, consent-гейтинг і події; лінт + типізація без помилок.</li>
+</ul>
+
+<div class="note"><b>Важливо для перевірки трекінгу:</b> на сайті є cookie-банер. Перед тестуванням подій натисніть <b>Accept</b> — до згоди Meta Pixel / GTM / GA4 навмисно не завантажуються (вимога GDPR/ePrivacy, реалізовано через Google Consent Mode v2: default denied → update granted).</div>
+
+<h2>Завдання 1, деліверабл 2 — де стоїть трекінг і як він працює</h2>
+
+<h3>Де у коді</h3>
+<table>
+  <tr><th>Файл</th><th>Що робить</th></tr>
+  <tr><td><code>public/init-analytics.js</code></td><td>Consent-gated бутстрап: Consent Mode v2 defaults (denied), base-код <b>GTM (GTM-KPX2ZJLN)</b> та <b>Meta Pixel (ID 1119426050436499)</b> + <code>fbq('track','PageView')</code>. Завантажується лише після згоди або якщо згода вже збережена.</td></tr>
+  <tr><td><code>src/lib/tracking.ts</code></td><td>Аналітичний шар: захоплення UTM/Click ID, події dataLayer, <b>GA4 (G-CGMTXHBH9R)</b> через gtag, прямий виклик <code>fbq('track','Lead')</code>, консольне логування кожної події.</td></tr>
+  <tr><td><code>src/components/ConsentBanner.tsx</code>, <code>src/lib/consent.ts</code></td><td>UI згоди; Accept вмикає одночасно обидва завантажувачі (бутстрап + env-вендори) через спільний хук.</td></tr>
+  <tr><td><code>src/components/sections/LeadForm.tsx</code></td><td>Форма: сабміт → <code>trackLead()</code> → події + thank-you стан.</td></tr>
+  <tr><td><code>src/App.tsx</code> (PageViewTracker)</td><td>SPA page_view при клієнтських переходах між маршрутами.</td></tr>
+  <tr><td><code>index.html</code></td><td>noscript-фолбеки GTM (iframe) та Pixel (img).</td></tr>
+</table>
+
+<h3>Події</h3>
+<table>
+  <tr><th>Подія</th><th>Куди</th><th>Коли</th></tr>
+  <tr><td><b>PageView</b></td><td>Meta Pixel (base-код)</td><td>Завантаження сторінки (після згоди)</td></tr>
+  <tr><td><b>page_view</b></td><td>dataLayer (для GTM) + GA4 автоматично</td><td>Кожне завантаження та кожен SPA-перехід між маршрутами</td></tr>
+  <tr><td><b>Lead</b></td><td>Meta Pixel — прямий <code>fbq('track','Lead')</code></td><td>Відправка лід-форми (один раз, на переході в thank-you стан)</td></tr>
+  <tr><td><b>generate_lead</b></td><td>dataLayer (для GTM) + GA4 напряму через gtag з параметрами атрибуції (utm_source, utm_medium, utm_campaign, gclid, fbclid)</td><td>Відправка лід-форми</td></tr>
+  <tr><td><b>conversion</b></td><td>Google Ads (gtag, send_to)</td><td>Готово в коді; вмикається env-змінними VITE_GOOGLE_ADS_ID / _LABEL</td></tr>
+</table>
+<p>Схема гібридна: прямі виклики gtag/fbq працюють «з коробки», а паралельні dataLayer-події (<code>page_view</code>, <code>generate_lead</code> з повним набором атрибуційних параметрів) дозволяють вести ті самі конверсії через теги GTM-контейнера. У контейнері при цьому не повинно бути дубльованих тегів GA4/Pixel на ці самі події (інакше конверсії задвояться) — контейнер використовується для розширень, прямі виклики є первинним каналом.</p>
+
+<h3>UTM та Click ID</h3>
+<p>Перелік параметрів, що відстежуються: <code>utm_source, utm_medium, utm_campaign, utm_term, utm_content, clickid, subid, fbclid, gclid, gbraid, wbraid, ttclid, msclkid</code>.</p>
+<ol>
+  <li>Зчитуються з query string при першому візиті (first-touch: зберігаються також landing_url і first_touch_at; повторний візит з новими мітками оновлює їх, не втрачаючи дату першого дотику).</li>
+  <li>Зберігаються в <code>localStorage</code> (ключ <code>sl_tracking</code>) — переживають навігацію по сайту.</li>
+  <li>Передаються: у <b>приховані поля лід-форми</b>, у <b>кожну dataLayer-подію</b>, у <b>параметри GA4-подій</b>, і <b>логуються в консоль</b> (префікс <code>[tracking]</code>).</li>
+</ol>
+<p>Перевірити можна, відкривши сайт з міткою, напр.: <span class="code">https://pet-landing.vercel.app/?utm_source=facebook&utm_campaign=test&fbclid=TEST123</span> — після Accept у консолі буде <code>[tracking] init</code> із захопленими параметрами, а в формі — приховані поля з цими значеннями.</p>
+
+<div class="pagebreak"></div>
+
+<h2>Завдання 2 — де губиться Click ID у зв'язці Meta → Keitaro → Landing → Platform → Postback</h2>
+
+<p><b>Симптом:</b> кліки в Keitaro фіксуються, postback приходить з HTTP 200, але <code>subid</code> порожній → конверсії не прив'язуються. HTTP 200 нічого не гарантує: Keitaro відповідає 200 навіть на postback без валідного subid.</p>
+
+<h3>1. Усі можливі точки втрати</h3>
+<ol>
+  <li><b>Оголошення веде повз Keitaro.</b> У Meta в якості фінального URL стоїть прямий лінк на лендинг, а не кампанійний лінк Keitaro → клік не реєструється, subid взагалі не генерується (але тоді б і кліки не фіксувались — за умовою фіксуються, отже точка нижче).</li>
+  <li><b>Tracking URL Keitaro → лендинг: макрос не підставляється.</b> У шаблоні <span class="code">https://site.com/?clickid={subid}&fbclid={fbclid}</span> помилка синтаксису макроса (не той регістр/назва, фігурні дужки одинарні замість потрібного формату) → на лендинг приходить <code>clickid={subid}</code> літералом або порожнім.</li>
+  <li><b>Редиректи до лендингу зрізають query string.</b> http→https, non-www→www, trailing slash редирект на хостингу/CDN, який не зберігає параметри → лендинг відкривається вже без <code>clickid</code>.</li>
+  <li><b>Лендинг не зберігає clickid.</b> Скрипт не зчитує параметр, зчитує під іншою назвою (чекає <code>subid</code>, а приходить <code>clickid</code>), губить його при внутрішній навігації (SPA/редирект на сторінку оффера без параметрів), або зберігає лише в cookie, яку блокує ITP/consent.</li>
+  <li><b>Вихідний лінк лендинг → платформа не несе subid.</b> Кнопка CTA — захардкоджений афілейт-лінк без підстановки; або subid кладеться не в той параметр, який платформа вважає своїм sub-параметром (<code>subid</code> vs <code>aff_sub</code> vs <code>s1</code> vs <code>var1</code>); або редирект-ланцюжок платформи (лендинг → трекер оффера → казино) губить параметр на одному з хопів.</li>
+  <li><b>Платформа не прив'язує subid до гравця.</b> Значення дійшло до кліка, але платформа зберігає sub-параметри лише з першого кліка/сесії, а реєстрація сталась в іншій сесії (інший пристрій, in-app браузер Meta → системний браузер) → у профілі гравця sub порожній.</li>
+  <li><b>Шаблон postback на боці платформи.</b> У URL postback вписано <code>${subid}</code>, але платформа використовує власний синтаксис макросів (<code>{aff_sub}</code>, <code>#s1#</code>, <code>%SUBID%</code> тощо) → вона шле literal або порожнє значення. <b>Це найчастіша причина рівно такого симптому</b> (200 + порожній subid): postback доходить, але макрос не розгортається.</li>
+  <li><b>Приймання postback у Keitaro.</b> Keitaro чекає параметр з іншою назвою (напр., постбек шле <code>subid</code>, а в налаштуваннях Keitaro клік-ідентифікатор мапиться на <code>sub_id_1</code> або кастомний параметр) → значення приходить, але не матчиться з кліком.</li>
+</ol>
+
+<h3>2. Покроковий чекліст діагностики</h3>
+<table>
+  <tr><th>Крок</th><th>Що перевіряю</th><th>Що має бути / що виправити</th></tr>
+  <tr><td><b>1. Тестовий клік</b></td><td>Проходжу весь ланцюжок сам: клік по кампанійному лінку Keitaro → у звіті кліків Keitaro відкриваю свій клік і копіюю реальний subid.</td><td>Клік є, subid згенерований (напр. <code>k7f3a9d2</code>). Якщо кліка немає — оголошення веде повз трекер: замінити фінальний URL у Meta на кампанійний лінк Keitaro.</td></tr>
+  <tr><td><b>2. Keitaro → лендинг</b></td><td>Дивлюсь адресний рядок після редиректу на лендинг (DevTools → Network, перший документ).</td><td>Має бути <span class="code">site.com/?clickid=k7f3a9d2&fbclid=IwAR...</span> з реальними значеннями. Якщо <code>{subid}</code> літералом або порожньо — виправити макрос у tracking URL кампанії. Якщо параметри зникли — знайти редирект (http/www/slash), який їх зрізає, і зберегти query при редиректі.</td></tr>
+  <tr><td><b>3. Лендинг</b></td><td>Консоль/localStorage: чи зчитано clickid; href кнопки CTA (DevTools → Elements).</td><td>Clickid збережений і підставлений у вихідний лінк. Якщо ні — виправити скрипт зчитування (назва параметра!) та генерацію лінка.</td></tr>
+  <tr><td><b>4. Лендинг → платформа</b></td><td>Клікаю CTA, у Network дивлюсь весь ланцюжок редиректів до фінального URL казино; потім у кабінеті платформи — чи має мій тестовий клік/реєстрація sub-параметр.</td><td>Subid присутній у фінальному URL у тому параметрі, який платформа документує як свій sub (напр. <code>aff_sub=k7f3a9d2</code>). Якщо губиться на хопі — лагодити той хоп; якщо параметр не той — перейменувати в лінку.</td></tr>
+  <tr><td><b>5. Postback платформи</b></td><td>У кабінеті платформи роблю test postback / дивлюсь лог відправлених postback: фактичний URL, який вона викликала.</td><td>У URL має бути реальне значення: <span class="code">tracker.com/postback?subid=k7f3a9d2&status=ftd&payout=150</span>. Якщо <code>subid=</code> порожній або <code>${subid}</code> літералом — замінити макрос на синтаксис саме цієї платформи (з її документації), який повертає значення її sub-параметра.</td></tr>
+  <tr><td><b>6. Приймання в Keitaro</b></td><td>Лог postback у Keitaro (Maintenance → Postbacks / клік → конверсії) + ручний тест: <span class="code">curl "https://tracker.com/postback?subid=k7f3a9d2&status=ftd&payout=10"</span> з реальним subid з кроку 1.</td><td>Ручний postback має прив'язати конверсію до кліка. Якщо прив'язує — Keitaro налаштований правильно і проблема вище (кроки 4–5). Якщо ні — звірити назву параметра клік-ідентифікатора та мапінг статусів (ftd → потрібний статус конверсії) у налаштуваннях кампанії/джерела.</td></tr>
+</table>
+<p><b>Логіка порядку:</b> крок 6 (ручний curl) можна виконати одразу після кроку 1 — це миттєво ділить ланцюжок навпіл: якщо ручний postback працює, проблема точно між лендингом і платформою (найімовірніше — макрос у шаблоні postback, п. 7 вище).</p>
+
+<h3>3. Приклад коректного ланцюжка (без втрати subid)</h3>
+<table>
+  <tr><th>Етап</th><th>URL / шаблон</th><th>Що передається</th></tr>
+  <tr><td>1. Оголошення Meta (Website URL)</td><td><span class="code">https://tracker.com/xyz123?fbclid={{fbclid}}</span> — кампанійний лінк Keitaro</td><td>Meta підставляє fbclid: <span class="code">...xyz123?fbclid=IwAR1a2b3c</span></td></tr>
+  <tr><td>2. Keitaro фіксує клік</td><td>Генерує subid = <b>k7f3a9d2</b></td><td>Клік у звіті з fbclid у sub-параметрах</td></tr>
+  <tr><td>3. Keitaro → лендинг (tracking URL кампанії)</td><td><span class="code">https://site.com/?clickid={subid}&fbclid={fbclid}</span></td><td>Реальний редирект: <span class="code">https://site.com/?clickid=k7f3a9d2&fbclid=IwAR1a2b3c</span></td></tr>
+  <tr><td>4. Лендинг</td><td>Скрипт зберігає clickid у localStorage і підставляє в CTA</td><td>href кнопки: <span class="code">https://platform.com/click?aff_id=777&offer=42&aff_sub=k7f3a9d2</span></td></tr>
+  <tr><td>5. Платформа</td><td>Зберігає aff_sub = k7f3a9d2 у профілі гравця при кліку/реєстрації</td><td>Реєстрація і депозит атрибутовані до aff_sub</td></tr>
+  <tr><td>6. Postback платформи (шаблон у її кабінеті)</td><td><span class="code">https://tracker.com/postback?subid={aff_sub}&status=ftd&payout={payout}</span> — макроси <b>платформи</b>, не Keitaro</td><td>Фактичний виклик: <span class="code">https://tracker.com/postback?subid=k7f3a9d2&status=ftd&payout=150</span></td></tr>
+  <tr><td>7. Keitaro приймає postback</td><td>Параметр <code>subid</code> = клік-ідентифікатор</td><td>k7f3a9d2 матчиться з кліком → конверсія ftd з payout 150 прив'язана ✓</td></tr>
+</table>
+<p><b>Ключовий принцип:</b> на кожному переході значення живе в параметрі, який <i>приймаюча</i> сторона реально читає, а макрос у шаблоні — це завжди синтаксис <i>відправляючої</i> сторони: у tracking URL — макроси Keitaro (<code>{subid}</code>), у postback URL — макроси платформи (<code>{aff_sub}</code> тощо). Помилка «вписати ${subid} у кабінеті платформи» і дає симптом із умови: HTTP 200, subid порожній.</p>
+
+</body>
+</html>
